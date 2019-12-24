@@ -33,7 +33,7 @@ router.get('/yokohama', function(req, res, next) {
                 return res.status(500).end();
             }
             if(rows){
-              res.send("OK");
+              res.send(rows[0].name);
             }
         })        
     }

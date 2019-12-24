@@ -39,6 +39,7 @@ jobs:
             sudo apt-get install -y mysql-server
             sudo mysql -u root -h 127.0.0.1 -e 'create database nodexample'
             sudo mysql -u root -h 127.0.0.1 -e 'create table city_master(name TEXT);' nodexample
+            sudo mysql -u root -h 127.0.0.1 -e 'insert into city_master(name) values('yokohama');' nodexample
       # Download and cache dependencies
       - restore_cache:
           keys:

@@ -26,7 +26,7 @@ describe('Test the root path', () => {
           if (err) {
             return done(err);
           }
-          expect(response.text).toMatch(/OK/);
+          expect(response.text).toMatch(/yokohama11/);
           expect(response.text).not.toMatch(/error/);
           return done();
         });
