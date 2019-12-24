@@ -16,6 +16,21 @@ describe('Test the root path', () => {
             done();
         });
     });
+    test('GET /yokohama', (done) => {
+        request(app)
+        .get('/yokohama')
+        .send()
+        .expect('Content-Type', /html/)
+        .expect(200)
+        .end((err, response) => {
+          if (err) {
+            return done(err);
+          }
+          expect(response.text).toMatch(/OK/);
+          expect(response.text).not.toMatch(/error/);
+          return done();
+        });
+    });
     test('POST /tokyo', (done) => {
         request(app)
         .post('/tokyo')
