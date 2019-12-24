@@ -34,9 +34,10 @@ jobs:
             echo Failed waiting for DB && exit 1
       - run:
           name: Setup schema
-          command: sudo apt-get install -y mysql-client 
-          command: sudo mysql -u root -h 127.0.0.1 -e 'create database nodexample'
-          command: sudo mysql -u root -h 127.0.0.1 -e 'create table city_master(name TEXT);' nodexample
+          command: |
+            sudo apt-get install -y mysql-client 
+            sudo mysql -u root -h 127.0.0.1 -e 'create database nodexample'
+            sudo mysql -u root -h 127.0.0.1 -e 'create table city_master(name TEXT);' nodexample
       # Download and cache dependencies
       - restore_cache:
           keys:
