@@ -8,7 +8,11 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
-
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        command:
+          [mysqld, --default-authentication-plugin=mysql_native_password]
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -17,8 +21,23 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - checkout
+      - run:
+        name: Waiting for DB connection
+          command: |
+            for i in `seq 1 30`;
+            do
+              nc -z localhost 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for DB && exit 1
+      - run:
+          name: Setup schema
+          command: sudo apt-get install -y mysql-client 
+          command: sudo mysql -u root -h 127.0.0.1 -e 'create database nodexample'
+          command: sudo mysql -u root -h 127.0.0.1 -e 'create table city_master(name TEXT);' nodexample
 
+      - checkout
       # Download and cache dependencies
       - restore_cache:
           keys:
