@@ -21,23 +21,22 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - checkout
       - run:
         name: Waiting for DB connection
-          command: |
-            for i in `seq 1 30`;
+        command: |
+          for i in `seq 1 30`;
             do
-              nc -z localhost 3306 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for DB && exit 1
+            nc -z localhost 3306 && echo Success && exit 0
+            echo -n .
+            sleep 1
+          done
+          echo Failed waiting for DB && exit 1
       - run:
-          name: Setup schema
-          command: sudo apt-get install -y mysql-client 
-          command: sudo mysql -u root -h 127.0.0.1 -e 'create database nodexample'
-          command: sudo mysql -u root -h 127.0.0.1 -e 'create table city_master(name TEXT);' nodexample
-
-      - checkout
+        name: Setup schema
+        command: sudo apt-get install -y mysql-client 
+        command: sudo mysql -u root -h 127.0.0.1 -e 'create database nodexample'
+        command: sudo mysql -u root -h 127.0.0.1 -e 'create table city_master(name TEXT);' nodexample
       # Download and cache dependencies
       - restore_cache:
           keys:
